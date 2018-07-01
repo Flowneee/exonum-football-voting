@@ -1,11 +1,14 @@
 extern crate exonum;
 extern crate football_voting;
 
+
 use exonum::blockchain::{GenesisConfig, ValidatorKeys};
 use exonum::node::{Node, NodeApiConfig, NodeConfig};
 use exonum::storage::MemoryDB;
 
-use football_voting::service::CurrencyService;
+
+use football_voting::service::VotesService;
+
 
 fn node_config() -> NodeConfig {
     let (consensus_public_key, consensus_secret_key) = exonum::crypto::gen_keypair();
@@ -45,11 +48,10 @@ fn node_config() -> NodeConfig {
 
 fn main() {
     exonum::helpers::init_logger().unwrap();
-
     println!("Creating in-memory database...");
     let node = Node::new(
         MemoryDB::new(),
-        vec![Box::new(CurrencyService)],
+        vec![Box::new(VotesService)],
         node_config(),
     );
     println!("Starting a single node...");
